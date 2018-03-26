@@ -58,7 +58,7 @@ object BankOCR {
     input.map(faxConverter).mkString
   }
 
-  def apply(scan:String):String ={
+  def scanToString(scan:String):String ={
     val split = numberSplitter(scan)
     numberChanger(split)
   }
