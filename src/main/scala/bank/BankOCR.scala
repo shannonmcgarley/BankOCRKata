@@ -1,8 +1,9 @@
 package bank
+import scala.collection.immutable
 
 object BankOCR {
 
-  def faxConverter(Input: String): Int = {
+  def faxConverter(Input: String): Any = {
     val zero =
         " _ " +
         "| |" +
@@ -44,7 +45,9 @@ object BankOCR {
         "|_|" +
         " _|"
     val numberList: List[String] = List(zero,one,two,three,four,five,six,seven,eight,nine)
-    numberList.indexOf(Input)
+    val out = numberList.indexOf(Input)
+    if (out == -1){'?'}
+    else out
   }
 
   def numberSplitter(input : String): List[String] = {
@@ -62,4 +65,12 @@ object BankOCR {
     val split = numberSplitter(scan)
     numberChanger(split)
   }
+
+  def checkSum(numbers:String): String ={
+    val digits: List[Int] = numbers.toList.map(_.asDigit)
+    val sum = digits.reverse.zipWithIndex.map(x=> x._1*(x._2+1)).sum
+    if (sum%11 == 0 ) {"valid"}
+    else {"ILL"}
+  }
+
 }

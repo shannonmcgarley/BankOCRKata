@@ -70,6 +70,32 @@ class BankOCRSpec extends WordSpec with MustMatchers {
 
     }
 
+
+    "return valid when given 345882865" in{
+
+      BankOCR.checkSum("345882865") mustEqual "valid"
+
+    }
+
+    "return ILL when given '123356789'" in{
+
+      BankOCR.checkSum("123356789") mustEqual "ILL"
+
+    }
+
+    "return valid when given '123456789'" in{
+
+      BankOCR.checkSum("123456789") mustEqual "valid"
+
+    }
+
+    "return '?' when given FaxedL" in{
+      BankOCR.faxConverter(
+          "   " +
+          "|  " +
+          "|_ ") mustEqual '?'
+    }
+
   }
 
 }
