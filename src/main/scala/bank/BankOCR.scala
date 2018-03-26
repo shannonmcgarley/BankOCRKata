@@ -1,5 +1,4 @@
 package bank
-import scala.collection.immutable
 
 object BankOCR {
 
@@ -45,14 +44,14 @@ object BankOCR {
         "|_|" +
         " _|"
     val numberList: List[String] = List(zero,one,two,three,four,five,six,seven,eight,nine)
-    val out = numberList.indexOf(Input)
-    if (out == -1){'?'}
-    else out
+    val output = numberList.indexOf(Input)
+    if (output == -1){'?'}
+    else output
   }
 
   def numberSplitter(input : String): List[String] = {
-   val K = 28
-    val grid = List(0,1,2,K, K+1,K+2, 2*K, 2*K+1,2*K+2 )
+    val key = 28
+    val grid = List(0,1,2,key, key+1,key+2, 2*key, 2*key+1,2*key+2 )
     val fax = List.range(0,9)
     fax.map(x => grid.map(_+(x*3)).map(input(_)).mkString)
    }
@@ -66,11 +65,24 @@ object BankOCR {
     numberChanger(split)
   }
 
-  def checkSum(numbers:String): String ={
-    val digits: List[Int] = numbers.toList.map(_.asDigit)
-    val sum = digits.reverse.zipWithIndex.map(x=> x._1*(x._2+1)).sum
-    if (sum%11 == 0 ) {"valid"}
-    else {"ILL"}
+  def checkSum(numbers:String): String = {
+    if (numbers.contains('?')) "ERR"
+    else {
+      val digits: List[Int] = numbers.toList.map(_.asDigit)
+      val sum = digits.reverse.zipWithIndex.map(x => x._1 * (x._2 + 1)).sum
+      if (sum % 11 == 0) {
+        "valid"
+      }
+      else {
+        "ILL"
+      }
+    }
   }
+
+  def apply(scan: String):String={
+    val numString = scanToString(scan)
+    checkSum(numString)
+  }
+
 
 }

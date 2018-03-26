@@ -89,11 +89,43 @@ class BankOCRSpec extends WordSpec with MustMatchers {
 
     }
 
-    "return '?' when given FaxedL" in{
+    "return '?' when given Fax L" in{
       BankOCR.faxConverter(
           "   " +
           "|  " +
           "|_ ") mustEqual '?'
+    }
+
+    "return ERR when given 345?82865" in{
+
+      BankOCR.checkSum("345?82865") mustEqual "ERR"
+
+    }
+    "return valid when given scan123..89 " in {
+
+    BankOCR.apply(
+        "    _  _     _  _  _  _  _ \n" +
+        "  | _| _||_||_ |_   ||_||_|\n" +
+        "  ||_  _|  | _||_|  ||_| _|") mustEqual "valid"
+
+  }
+
+    "return ERROR when given scanL23..89 " in {
+
+      BankOCR.apply(
+          "    _  _     _  _  _  _  _ \n" +
+          "|   _| _||_||_ |_   ||_||_|\n" +
+          "|_ |_  _|  | _||_|  ||_| _|") mustEqual "ERR"
+
+    }
+
+    "return ILLEGAL when given scan113..89 " in {
+
+      BankOCR.apply(
+          "       _     _  _  _  _  _ \n" +
+          "  |  | _||_||_ |_   ||_||_|\n" +
+          "  |  | _|  | _||_|  ||_| _|") mustEqual "ILL"
+
     }
 
   }
