@@ -53,7 +53,7 @@ class BankOCRSpec extends WordSpec with MustMatchers {
 
     "return 333333333when given Faxed333333333" in{
 
-      BankOCR.apply(
+      BankOCR.scanToString(
         " _  _  _  _  _  _  _  _  _ \n" +
           " _| _| _| _| _| _| _| _| _|\n" +
           " _| _| _| _| _| _| _| _| _|\n") mustEqual "333333333"
@@ -63,7 +63,7 @@ class BankOCRSpec extends WordSpec with MustMatchers {
 
     "return 123456789 when given Faxed123456789" in{
 
-      BankOCR.apply(
+      BankOCR.scanToString(
           "    _  _     _  _  _  _  _ \n" +
           "  | _| _||_||_ |_   ||_||_|\n" +
           "  ||_  _|  | _||_|  ||_| _|") mustEqual "123456789"
