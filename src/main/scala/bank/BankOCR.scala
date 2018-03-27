@@ -2,48 +2,50 @@ package bank
 
 object BankOCR {
 
+  val zero: String =
+      " _ " +
+      "| |" +
+      "|_|"
+  val one: String =
+      "   " +
+      "  |" +
+      "  |"
+  val two: String =
+      " _ " +
+      " _|" +
+      "|_ "
+  val three: String =
+      " _ " +
+      " _|" +
+      " _|"
+  val four: String =
+      "   " +
+      "|_|" +
+      "  |"
+  val five: String =
+      " _ " +
+      "|_ " +
+      " _|"
+  val six: String =
+      " _ " +
+      "|_ " +
+      "|_|"
+  val seven: String =
+      " _ " +
+      "  |" +
+      "  |"
+  val eight: String =
+      " _ " +
+      "|_|" +
+      "|_|"
+  val nine: String =
+      " _ " +
+      "|_|" +
+      " _|"
+
+  val numberList: List[String] = List(zero,one,two,three,four,five,six,seven,eight,nine)
+
   def faxConverter(Input: String): Any = {
-    val zero =
-        " _ " +
-        "| |" +
-        "|_|"
-    val one =
-        "   " +
-        "  |" +
-        "  |"
-    val two =
-        " _ " +
-        " _|" +
-        "|_ "
-    val three =
-        " _ " +
-        " _|" +
-        " _|"
-    val four =
-        "   " +
-        "|_|" +
-        "  |"
-    val five =
-        " _ " +
-        "|_ " +
-        " _|"
-    val six =
-        " _ " +
-        "|_ " +
-        "|_|"
-    val seven =
-        " _ " +
-        "  |" +
-        "  |"
-    val eight =
-        " _ " +
-        "|_|" +
-        "|_|"
-    val nine =
-        " _ " +
-        "|_|" +
-        " _|"
-    val numberList: List[String] = List(zero,one,two,three,four,five,six,seven,eight,nine)
     val output = numberList.indexOf(Input)
     if (output == -1){'?'}
     else output
@@ -79,10 +81,21 @@ object BankOCR {
     }
   }
 
+  def possibleNumbers(missread: String) ={
+    numberList
+      .map(x => missread.zip(x)
+        .map(l => l._2.compareTo(l._1))
+        .filter(x => x !=0))
+      .zipWithIndex
+      .filter(x => x._1 == List(63) || x._1 == List(92))
+      .map(_._2)
+  }
+  
+
+
   def apply(scan: String):String={
     val numString = scanToString(scan)
     checkSum(numString)
+
   }
-
-
 }

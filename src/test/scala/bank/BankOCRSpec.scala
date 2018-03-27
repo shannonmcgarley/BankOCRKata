@@ -12,6 +12,7 @@ class BankOCRSpec extends WordSpec with MustMatchers {
         " _ " +
         "|_ " +
         " _|") mustEqual 5
+
     }
 
     "return 7 when given Faxed7" in{
@@ -54,7 +55,7 @@ class BankOCRSpec extends WordSpec with MustMatchers {
     "return 333333333when given Faxed333333333" in{
 
       BankOCR.scanToString(
-        " _  _  _  _  _  _  _  _  _ \n" +
+          " _  _  _  _  _  _  _  _  _ \n" +
           " _| _| _| _| _| _| _| _| _|\n" +
           " _| _| _| _| _| _| _| _| _|\n") mustEqual "333333333"
 
@@ -127,6 +128,37 @@ class BankOCRSpec extends WordSpec with MustMatchers {
           "  |  | _|  | _||_|  ||_| _|") mustEqual "ILL"
 
     }
+
+
+    "return List(3) when given Fax backwards F" in{
+      BankOCR.possibleNumbers(
+          " _ " +
+          " _|" +
+          "  |") mustEqual List(3)
+    }
+
+    "return List(4) when given Fax -|" in{
+      BankOCR.possibleNumbers(
+          "   " +
+          " _|" +
+          "  |") mustEqual List(4)
+    }
+
+    "return List(8) when given Fax [] " in{
+      BankOCR.possibleNumbers(
+          " _ " +
+          "| |" +
+          "|_|") mustEqual List(8)
+    }
+
+
+    "return List(0,9) when given Fax that could be 0 or a 9 " in{
+      BankOCR.possibleNumbers(
+          " _ " +
+          "| |" +
+          " _|") mustEqual List(0,9)
+    }
+
 
   }
 
