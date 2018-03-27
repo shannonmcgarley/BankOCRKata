@@ -160,6 +160,30 @@ class BankOCRSpec extends WordSpec with MustMatchers {
     }
 
 
+    "return List(6,9) when given Fax 5 that could be a 6 or a 9 " in{
+      BankOCR.possibleNumbers(
+          " _ " +
+          "|_ " +
+          " _|") mustEqual List(6,9)
+    }
+
+
+    "return List(1) when given Fax i " in{
+      BankOCR.possibleNumbers(
+          "   " +
+          "   " +
+          "  |") mustEqual List(1)
+    }
+
+
+    "return List() when given Fax jibberish " in{
+      BankOCR.possibleNumbers(
+          "   " +
+          "|  " +
+          "  |") mustEqual List()
+    }
+
+
   }
 
 }

@@ -62,7 +62,7 @@ object BankOCR {
     input.map(faxConverter).mkString
   }
 
-  def scanToString(scan:String):String ={
+  def scanToString(scan:String):String = {
     val split = numberSplitter(scan)
     numberChanger(split)
   }
@@ -71,8 +71,8 @@ object BankOCR {
     if (numbers.contains('?')) "ERR"
     else {
       val digits: List[Int] = numbers.toList.map(_.asDigit)
-      val sum = digits.reverse.zipWithIndex.map(x => x._1 * (x._2 + 1)).sum
-      if (sum % 11 == 0) {
+      val Sum = digits.reverse.zipWithIndex.map(x => x._1 * (x._2 + 1)).sum
+      if (Sum % 11 == 0) {
         "valid"
       }
       else {
@@ -81,21 +81,22 @@ object BankOCR {
     }
   }
 
-  def possibleNumbers(missread: String) ={
+  def possibleNumbers(missRead: String) : List[Int] = {
     numberList
-      .map(x => missread.zip(x)
+      .map(x => missRead.zip(x)
         .map(l => l._2.compareTo(l._1))
         .filter(x => x !=0))
       .zipWithIndex
       .filter(x => x._1 == List(63) || x._1 == List(92))
       .map(_._2)
   }
-  
 
 
-  def apply(scan: String):String={
+
+
+
+  def apply(scan: String):String = {
     val numString = scanToString(scan)
     checkSum(numString)
-
   }
 }
