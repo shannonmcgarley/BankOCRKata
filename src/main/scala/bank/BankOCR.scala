@@ -1,6 +1,6 @@
 package bank
 
-object BankOCR {
+object BankOCR extends App {
 
   val zero: String =
       " _ " +
@@ -81,22 +81,69 @@ object BankOCR {
     }
   }
 
-  def possibleNumbers(missRead: String) : List[Int] = {
+  def possibleNumbers(missRead: String) : List[String] = {
     numberList
       .map(x => missRead.zip(x)
         .map(l => l._2.compareTo(l._1))
         .filter(x => x !=0))
       .zipWithIndex
-      .filter(x => x._1 == List(63) || x._1 == List(92))
-      .map(_._2)
+      .filter(x =>  x._1 == List() || x._1.length ==1)
+      .map(_._2.toString)
   }
 
+def aMBProducer(scan: String) : List[String] = {
+  val splitNums = numberSplitter(scan)
+
+  for {
+    a <- possibleNumbers(splitNums.head)
+    b <- possibleNumbers(splitNums(1))
+    c <- possibleNumbers(splitNums(2))
+    d <- possibleNumbers(splitNums(3))
+    e <- possibleNumbers(splitNums(4))
+    f <- possibleNumbers(splitNums(5))
+    g <- possibleNumbers(splitNums(6))
+    h <- possibleNumbers(splitNums(7))
+    i <- possibleNumbers(splitNums(8))
+
+  } yield {
+    a+b+c+d+e+f+g+h+i
+  }
+}
 
 
-
-
-  def apply(scan: String):String = {
+  def AMBListWriter(scan :String) :String = {
     val numString = scanToString(scan)
-    checkSum(numString)
+    val compare = numString.toList
+    val validOptions = aMBProducer(scan).filter(x => checkSum(x) == "valid").map(x => x.toList)
+    val singleChangeValidOptions = validOptions.map(x => x.zip(compare)).filter(x => x.count(x => x._2 != x._1) ==1 )
+    val output = singleChangeValidOptions.map(x => x.map(x => x._1).mkString)
+    if (output == Nil)"ILL"
+    else s"$numString AMB ${output.map(_+" ").mkString}"
   }
+
+  def apply(scan: String) : String = {
+    val numString = scanToString(scan)
+        val cSnS = checkSum(numString)
+    cSnS match {
+      case "valid" => s"$numString valid"
+      case _ => AMBListWriter(scan)
+    }
+  }
+
+  val derek ={
+        " _  _  _  _  _  _  _  _    \n" +
+        "| || || || || || || ||_   |\n" +
+        "|_||_||_||_||_||_||_| _|  |"
+  }
+
+  val derek2 = {
+      " _  _  _  _  _  _  _  _  _ \n" +
+      "|_||_||_||_||_||_||_||_||_|\n" +
+      "|_||_||_||_||_||_||_||_||_|"
+  }
+  println(Console.UNDERLINED + s"$derek2" + Console.YELLOW_B + Console.RED)
+  println("      __            /^\\\n    .'  \\          / :.\\   \n   /     \\         | :: \\ \n  /   /.  \\       / ::: | \n |    |::. \\     / :::'/  \n |   / \\::. |   / :::'/\n `--`   \\'  `~~~ ':'/`\n         /         (    \n        /   0 _ 0   \\   \n      \\/     \\_/     \\/  \n    -== '.'   |   '.' ==-    HAPPY EASTER FROM PAN XXX  \n      /\\    '-^-'    /\\    \n        \\   _   _   /             \n       .-`-((\\o/))-`-.   \n  _   /     //^\\\\     \\   _    \n.\"o\".(    , .:::. ,    ).\"o\".  \n|o  o\\\\    \\:::::/    //o  o| \n \\    \\\\   |:::::|   //    /   \n  \\    \\\\__/:::::\\__//    /   \n   \\ .:.\\  `':::'`  /.:. /      \n    \\':: |_       _| ::'/  \n LJO `---` `\"\"\"\"\"` `---`")
+println(Console.RESET +apply(derek2))
+
+
 }

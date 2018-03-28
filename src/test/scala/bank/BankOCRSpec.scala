@@ -144,11 +144,11 @@ class BankOCRSpec extends WordSpec with MustMatchers {
           "  |") mustEqual List(4)
     }
 
-    "return List(8) when given Fax [] " in{
+    "return List(0,8) when given Fax [] " in{
       BankOCR.possibleNumbers(
           " _ " +
           "| |" +
-          "|_|") mustEqual List(8)
+          "|_|") mustEqual List(0,8)
     }
 
 
@@ -164,7 +164,7 @@ class BankOCRSpec extends WordSpec with MustMatchers {
       BankOCR.possibleNumbers(
           " _ " +
           "|_ " +
-          " _|") mustEqual List(6,9)
+          " _|") mustEqual List(5,6,9)
     }
 
 
@@ -182,6 +182,14 @@ class BankOCRSpec extends WordSpec with MustMatchers {
           "|  " +
           "  |") mustEqual List()
     }
+
+    "return List(1,7) when given Fax1 " in{
+      BankOCR.possibleNumbers(
+        "   " +
+          "  |" +
+          "  |") mustEqual List(1,7)
+    }
+
 
 
   }
